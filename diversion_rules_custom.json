@@ -1,0 +1,272 @@
+{
+  "rules": [
+    {
+      "outbound": "block",
+      "name": "🛑 Adblock",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "acl:BanAD",
+        "geosite:category-ads"
+      ]
+    },
+    {
+      "outbound": "block",
+      "name": "🍃 AdblockPlus",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "acl:BanProgramAD",
+        "acl:BanADCompany"
+      ]
+    },
+    {
+      "outbound": "block",
+      "name": "🛑 malware",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:malware",
+        "geoip:malware",
+        "geoip:phishing",
+        "geosite:phishing",
+        "geosite:cryptominers"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🍎 Apple",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:apple",
+        "geosite:apple-ads",
+        "geosite:apple-dev",
+        "geosite:apple-pki",
+        "geosite:apple-update"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "📹 YouTube",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:youtube"
+      ],
+      "package": [
+        "com.google.android.youtube"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "♊️ Google Gemini",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "acl:Gemini"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🌏 Google",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:google",
+        "geoip:google"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "📸 Instagram",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:instagram"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🎥 Netflix",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geoip:netflix",
+        "geosite:netflix"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "📲 Discord",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:discord",
+        "acl:Discord"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "📲 WhatsApp",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:whatsapp",
+        "acl:Whatsapp"
+      ],
+      "package": [
+        "com.whatsapp"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "📲 Telegram",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geoip:telegram",
+        "geosite:telegram"
+      ],
+      "package": [
+        "org.telegram.messenger.web",
+        "org.telegram.messenger"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "💬 Claude + Claude Code",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "acl:Claude"
+      ],
+      "domain_suffix": [
+        "claude.ai",
+        "anthropic.com",
+        "api.anthropic.com",
+        "statsig.com",
+        "sentry.io",
+        "launchdarkly.com",
+        "stripe.com",
+        "stripe.network",
+        "js.stripe.com",
+        "m.stripe.network",
+        "hooks.stripe.com"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "💬 OpenAI",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geoip:openai",
+        "geosite:openai"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🇷🇺 RU Domestic",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:ru",
+        "geoip:ru"
+      ],
+      "domain_suffix": [
+        "vk.com",
+        "vk.ru",
+        "vkontakte.ru",
+        "userapi.com",
+        "vk-cdn.net",
+        "vkuservideo.net",
+        "vk-apps.com",
+        "vkplay.ru",
+        "vkplay.video",
+        "ok.ru",
+        "odnoklassniki.ru",
+        "yandex.ru",
+        "yandex.net",
+        "ya.ru",
+        "yadisk.com",
+        "mail.ru",
+        "rambler.ru",
+        "dzen.ru",
+        "ozon.ru",
+        "ozon.com",
+        "wildberries.ru",
+        "wb.ru",
+        "aliexpress.ru",
+        "avito.ru",
+        "dns-shop.ru",
+        "mvideo.ru",
+        "eldorado.ru",
+        "citilink.ru",
+        "sbermegamarket.ru",
+        "megamarket.ru",
+        "lamoda.ru",
+        "patefon.ru",
+        "zvuk.com",
+        "sber.ru",
+        "sberbank.ru",
+        "tinkoff.ru",
+        "tbank.ru",
+        "vtb.ru",
+        "domrfbank.ru",
+        "domrf.ru",
+        "domclick.ru",
+        "ozonbank.ru",
+        "alfabank.ru",
+        "alfa-bank.ru",
+        "raiffeisen.ru",
+        "psbank.ru",
+        "rshb.ru",
+        "gazprombank.ru",
+        "gazprom.ru",
+        "rosbank.ru",
+        "pochtabank.ru",
+        "akbars.ru",
+        "sovcombank.ru",
+        "homecredit.ru",
+        "zenit.ru",
+        "mtsbank.ru",
+        "absolutbank.ru",
+        "vtb.com",
+        "gosuslugi.ru",
+        "goskey.ru",
+        "digital.gov.ru",
+        "pfr.gov.ru",
+        "sozrf.ru",
+        "nalog.ru",
+        "nalog.gov.ru",
+        "mos.ru",
+        "ivi.ru",
+        "kinopoisk.ru",
+        "2gis.ru",
+        "hh.ru",
+        "superjob.ru",
+        "rbc.ru",
+        "ria.ru",
+        "kommersant.ru"
+      ],
+      "package": [
+        "com.vkontakte.android",
+        "com.vk.vkapps",
+        "ru.vk.superapp",
+        "com.vk.im"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🌏 GFW",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geoip:blocked@ru",
+        "geoip:blocked-community@ru",
+        "geosite:blocked@ru"
+      ]
+    }
+  ]
+}
