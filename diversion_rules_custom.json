@@ -172,7 +172,9 @@
       "or": true,
       "rule_set_build_in": [
         "geosite:ru",
-        "geoip:ru"
+        "geoip:ru",
+        "geosite:category-bank-ru",
+        "geosite:category-finance-ru"
       ],
       "domain_suffix": [
         "vk.com",
