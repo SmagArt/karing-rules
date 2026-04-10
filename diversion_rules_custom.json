@@ -270,13 +270,20 @@
         "superjob.ru",
         "rbc.ru",
         "ria.ru",
-        "kommersant.ru"
+        "kommersant.ru",
+        "bitrix24.ru",
+        "bitrix24.com",
+        "bitrix.ru",
+        "1c-bitrix.ru",
+        "bx-cloud.com",
+        "bitrixsoft.com"
       ],
       "package": [
         "com.vkontakte.android",
         "com.vk.vkapps",
         "ru.vk.superapp",
-        "com.vk.im"
+        "com.vk.im",
+        "com.bitrix.messenger"
       ]
     },
     {
