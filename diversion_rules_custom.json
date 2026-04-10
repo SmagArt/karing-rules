@@ -47,6 +47,21 @@
       ]
     },
     {
+      "outbound": "direct",
+      "name": "🏠 Xiaomi Home",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "mi.com",
+        "xiaomi.com",
+        "mi-img.com",
+        "miui.com"
+      ],
+      "package": [
+        "com.xiaomi.smarthome"
+      ]
+    },
+    {
       "outbound": "currentSelected",
       "name": "📹 YouTube",
       "switch": true,
@@ -127,6 +142,10 @@
       "rule_set_build_in": [
         "geoip:telegram",
         "geosite:telegram"
+      ],
+      "domain_suffix": [
+        "my.telegram.org",
+        "telegram.org"
       ],
       "package": [
         "org.telegram.messenger.web",
