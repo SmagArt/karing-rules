@@ -22,7 +22,7 @@
     },
     {
       "outbound": "block",
-      "name": "🛑 malware",
+      "name": "🛑 Malware & Phishing",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
@@ -35,15 +35,100 @@
     },
     {
       "outbound": "direct",
-      "name": "🍎 Apple",
+      "name": "🏃 Local Fitness API (Zepp/Mi-Fit only — direct)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "huami.com", "api-mifit.huami.com", "api-mifit-us2.huami.com",
+        "mi-fit.com", "mifit.com"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🛒 RU Marketplaces & CDN (anti-VPN-detect — direct)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "wildberries.ru", "wb.ru",
+        "wbbasket.ru", "wbstatic.net", "wbx-content.ru", "wbcdn.net",
+        "wbcontent.pro", "wbxway.ru", "wbgeo.ru",
+        "ozon.ru", "ozon.com", "ozone.ru", "ozonusercontent.com",
+        "ozonru.net", "ozon.travel",
+        "yandex.ru", "yandex.net", "yandex.com", "ya.ru",
+        "yastatic.net", "yandexcloud.net", "yandexmetrica.com",
+        "yastat.net", "yandex-team.ru", "yadi.sk", "yadisk.com",
+        "aliexpress.ru", "alicdn.com",
+        "avito.ru", "avito.st", "avito.ru.com", "avito-cdn.net",
+        "dns-shop.ru", "mvideo.ru", "eldorado.ru", "citilink.ru",
+        "sbermegamarket.ru", "megamarket.ru", "lamoda.ru", "lmcdn.ru"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "📘 VK (app + Messenger + CDN — direct)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "vk.com", "vk.ru", "vk.me", "vk.cc",
+        "vkontakte.ru", "vkontakte.com",
+        "userapi.com", "vk-cdn.net", "vk-cdn.com", "vk-apps.com",
+        "vkuservideo.net", "vkuseraudio.net", "vkuser.net",
+        "vkuserlive.net", "vkuservideo.com",
+        "mycdn.me", "vkvideo.ru", "vkplay.ru", "vkplay.video",
+        "vk-portal.net", "vkforms.ru", "vkmessenger.com",
+        "ok.ru", "odnoklassniki.ru"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🇷🇺 RU Priority (Domestic + Banks + Gov + Infra)",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
-        "geosite:apple",
-        "geosite:apple-ads",
-        "geosite:apple-dev",
-        "geosite:apple-pki",
-        "geosite:apple-update"
+        "geosite:ru",
+        "geoip:ru",
+        "geosite:category-bank-ru",
+        "geosite:category-finance-ru"
+      ],
+      "domain_suffix": [
+        "mail.ru", "rambler.ru", "dzen.ru",
+        "patefon.ru", "zvuk.com",
+        "sber.ru", "sberbank.ru", "tinkoff.ru", "tbank.ru",
+        "vtb.ru", "vtb.com", "domrfbank.ru", "domrf.ru", "domclick.ru",
+        "ozonbank.ru", "alfabank.ru", "alfa-bank.ru", "raiffeisen.ru",
+        "psbank.ru", "rshb.ru", "gazprombank.ru", "gazprom.ru",
+        "rosbank.ru", "pochtabank.ru", "akbars.ru", "sovcombank.ru",
+        "homecredit.ru", "zenit.ru", "mtsbank.ru", "absolutbank.ru",
+        "gosuslugi.ru", "goskey.ru", "digital.gov.ru", "pfr.gov.ru",
+        "sozrf.ru", "nalog.ru", "nalog.gov.ru", "npd.nalog.ru",
+        "mos.ru", "parking.mos.ru", "gorparkovki.ru",
+        "sfr.gov.ru", "fns.gov.ru", "customs.gov.ru", "mvd.gov.ru",
+        "minzdrav.gov.ru", "rosreestr.gov.ru", "rosreestr.ru",
+        "fas.gov.ru", "rospotrebnadzor.ru", "cbr.ru",
+        "sufd.budget.gov.ru", "budget.gov.ru", "zakupki.gov.ru",
+        "torgi.gov.ru", "pravo.gov.ru", "kremlin.ru",
+        "ivi.ru", "kinopoisk.ru", "2gis.ru", "2gis.com",
+        "hh.ru", "superjob.ru",
+        "rbc.ru", "ria.ru", "kommersant.ru", "vgtrk.com",
+        "bitrix24.ru", "bitrix24.com", "bitrix.ru",
+        "1c-bitrix.ru", "bx-cloud.com", "bitrixsoft.com",
+        "pyaterochka.ru", "x5.ru", "x5retail.ru", "au.ru",
+        "rusprofile.ru", "kontur.ru", "tensor.ru", "diadoc.ru", "sbis.ru",
+        "mts.ru", "mts.cloud", "mtstv.ru", "mts-link.ru",
+        "ssl.mts.ru", "login.mts.ru", "api.mts.ru", "lk.mts.ru",
+        "my.mts.ru", "mymts.mts.ru",
+        "beeline.ru", "rostelecom.ru", "rt.ru",
+        "cdnvideo.ru", "cdnvideo.net", "ngenix.net", "vscdns.ru"
+      ],
+      "package": [
+        "com.bitrix.messenger",
+        "ru.yandex.market", "ru.yandex.mobile.taxi",
+        "ru.ozon.app.iphone", "ru.wildberries.mobileapp",
+        "com.alibaba.aliexpresshd",
+        "ru.x5retail.pyaterochka",
+        "ru.gosuslugi.avto", "ru.mos.gorparkovki",
+        "ru.au.app",
+        "ru.mts.mymts", "com.mts.mymts"
       ]
     },
     {
@@ -52,13 +137,31 @@
       "switch": true,
       "or": true,
       "domain_suffix": [
-        "mi.com",
-        "xiaomi.com",
-        "mi-img.com",
-        "miui.com"
+        "mi.com", "xiaomi.com", "mi-img.com", "miui.com"
       ],
       "package": [
         "com.xiaomi.smarthome"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🍎 Apple (Direct, кроме рекламы)",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:apple",
+        "geosite:apple-dev",
+        "geosite:apple-pki",
+        "geosite:apple-update"
+      ]
+    },
+    {
+      "outbound": "block",
+      "name": "🍎 Apple Ads",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:apple-ads"
       ]
     },
     {
@@ -154,7 +257,7 @@
     },
     {
       "outbound": "currentSelected",
-      "name": "💬 Claude + Claude Code",
+      "name": "💬 Claude + Claude Code (CLI)",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
@@ -164,6 +267,7 @@
         "claude.ai",
         "anthropic.com",
         "api.anthropic.com",
+        "console.anthropic.com",
         "statsig.com",
         "sentry.io",
         "launchdarkly.com",
@@ -172,123 +276,58 @@
         "js.stripe.com",
         "m.stripe.network",
         "hooks.stripe.com"
+      ],
+      "process_name": [
+        "claude",
+        "claude.exe"
       ]
     },
     {
       "outbound": "currentSelected",
-      "name": "💬 OpenAI",
+      "name": "💬 OpenAI / ChatGPT",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
         "geoip:openai",
         "geosite:openai"
-      ]
-    },
-    {
-      "outbound": "direct",
-      "name": "🇷🇺 RU Domestic",
-      "switch": true,
-      "or": true,
-      "rule_set_build_in": [
-        "geosite:ru",
-        "geoip:ru",
-        "geosite:category-bank-ru",
-        "geosite:category-finance-ru"
       ],
       "domain_suffix": [
-        "vk.com",
-        "vk.ru",
-        "vkontakte.ru",
-        "userapi.com",
-        "vk-cdn.net",
-        "vkuservideo.net",
-        "vk-apps.com",
-        "vk.me",
-        "vkplay.ru",
-        "vkplay.video",
-        "ok.ru",
-        "odnoklassniki.ru",
-        "yandex.ru",
-        "yandex.net",
-        "ya.ru",
-        "yadisk.com",
-        "mail.ru",
-        "rambler.ru",
-        "dzen.ru",
-        "ozon.ru",
-        "ozon.com",
-        "wildberries.ru",
-        "wb.ru",
-        "aliexpress.ru",
-        "avito.ru",
-        "dns-shop.ru",
-        "mvideo.ru",
-        "eldorado.ru",
-        "citilink.ru",
-        "sbermegamarket.ru",
-        "megamarket.ru",
-        "lamoda.ru",
-        "patefon.ru",
-        "zvuk.com",
-        "sber.ru",
-        "sberbank.ru",
-        "tinkoff.ru",
-        "tbank.ru",
-        "vtb.ru",
-        "domrfbank.ru",
-        "domrf.ru",
-        "domclick.ru",
-        "ozonbank.ru",
-        "alfabank.ru",
-        "alfa-bank.ru",
-        "raiffeisen.ru",
-        "psbank.ru",
-        "rshb.ru",
-        "gazprombank.ru",
-        "gazprom.ru",
-        "rosbank.ru",
-        "pochtabank.ru",
-        "akbars.ru",
-        "sovcombank.ru",
-        "homecredit.ru",
-        "zenit.ru",
-        "mtsbank.ru",
-        "absolutbank.ru",
-        "vtb.com",
-        "gosuslugi.ru",
-        "goskey.ru",
-        "digital.gov.ru",
-        "pfr.gov.ru",
-        "sozrf.ru",
-        "nalog.ru",
-        "nalog.gov.ru",
-        "mos.ru",
-        "ivi.ru",
-        "kinopoisk.ru",
-        "2gis.ru",
-        "hh.ru",
-        "superjob.ru",
-        "rbc.ru",
-        "ria.ru",
-        "kommersant.ru",
-        "bitrix24.ru",
-        "bitrix24.com",
-        "bitrix.ru",
-        "1c-bitrix.ru",
-        "bx-cloud.com",
-        "bitrixsoft.com"
-      ],
-      "package": [
-        "com.vkontakte.android",
-        "com.vk.vkapps",
-        "ru.vk.superapp",
-        "com.vk.im",
-        "com.bitrix.messenger"
+        "openai.com",
+        "chatgpt.com",
+        "oaistatic.com",
+        "oaiusercontent.com"
       ]
     },
     {
       "outbound": "currentSelected",
-      "name": "🌏 GFW",
+      "name": "🐙 GitHub & Dev Infra",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "github.com",
+        "githubusercontent.com",
+        "raw.githubusercontent.com",
+        "github.io",
+        "githubassets.com",
+        "githubcopilot.com",
+        "copilot-proxy.githubusercontent.com",
+        "ghcr.io",
+        "npmjs.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "docker.io",
+        "docker.com",
+        "registry-1.docker.io",
+        "gcr.io",
+        "k8s.io",
+        "huggingface.co",
+        "hf.co"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🌏 GFW (RU Blocked)",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
