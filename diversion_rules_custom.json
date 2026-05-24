@@ -64,6 +64,37 @@
       ]
     },
     {
+      "outbound": "currentSelected",
+      "name": "📹 YouTube",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:youtube"
+      ],
+      "package": [
+        "com.google.android.youtube"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "♊️ Google Gemini",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "acl:Gemini"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🌏 Google",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:google",
+        "geoip:google"
+      ]
+    },
+    {
       "outbound": "direct",
       "name": "📘 VK (app + Messenger + CDN — direct)",
       "switch": true,
@@ -109,6 +140,7 @@
         "torgi.gov.ru", "pravo.gov.ru", "kremlin.ru",
         "ivi.ru", "kinopoisk.ru", "2gis.ru", "2gis.com",
         "hh.ru", "superjob.ru",
+        "russiarunning.com", "russiarunning.ru",
         "rbc.ru", "ria.ru", "kommersant.ru", "vgtrk.com",
         "bitrix24.ru", "bitrix24.com", "bitrix.ru",
         "1c-bitrix.ru", "bx-cloud.com", "bitrixsoft.com",
@@ -162,37 +194,6 @@
       "or": true,
       "rule_set_build_in": [
         "geosite:apple-ads"
-      ]
-    },
-    {
-      "outbound": "currentSelected",
-      "name": "📹 YouTube",
-      "switch": true,
-      "or": true,
-      "rule_set_build_in": [
-        "geosite:youtube"
-      ],
-      "package": [
-        "com.google.android.youtube"
-      ]
-    },
-    {
-      "outbound": "currentSelected",
-      "name": "♊️ Google Gemini",
-      "switch": true,
-      "or": true,
-      "rule_set_build_in": [
-        "acl:Gemini"
-      ]
-    },
-    {
-      "outbound": "currentSelected",
-      "name": "🌏 Google",
-      "switch": true,
-      "or": true,
-      "rule_set_build_in": [
-        "geosite:google",
-        "geoip:google"
       ]
     },
     {
@@ -323,6 +324,16 @@
         "k8s.io",
         "huggingface.co",
         "hf.co"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🚴 Strava",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "strava.com",
+        "strava.st"
       ]
     },
     {
