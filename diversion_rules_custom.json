@@ -85,13 +85,22 @@
       ]
     },
     {
-      "outbound": "currentSelected",
-      "name": "🌏 Google",
+      "outbound": "direct",
+      "name": "🌏 Google (search/Cloud/Gmail/Drive — direct, чистый RU-IP)",
       "switch": true,
       "or": true,
       "rule_set_build_in": [
         "geosite:google",
         "geoip:google"
+      ]
+    },
+    {
+      "outbound": "direct",
+      "name": "🔍 RU-facing за Cloudflare (OSINT и пр. — direct, иначе CF-challenge с VPN-IP)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "search4faces.com"
       ]
     },
     {
@@ -125,7 +134,8 @@
         "mail.ru", "rambler.ru", "dzen.ru",
         "patefon.ru", "zvuk.com",
         "sber.ru", "sberbank.ru", "tinkoff.ru", "tbank.ru",
-        "vtb.ru", "vtb.com", "domrfbank.ru", "domrf.ru", "domclick.ru",
+        "vtb.ru", "vtb.com", "vtb24.ru", "vtb-online.ru", "bankvtb.ru",
+        "domrfbank.ru", "domrf.ru", "domclick.ru",
         "ozonbank.ru", "alfabank.ru", "alfa-bank.ru", "raiffeisen.ru",
         "psbank.ru", "rshb.ru", "gazprombank.ru", "gazprom.ru",
         "rosbank.ru", "pochtabank.ru", "akbars.ru", "sovcombank.ru",
@@ -143,6 +153,7 @@
         "russiarunning.com", "russiarunning.ru",
         "rbc.ru", "ria.ru", "kommersant.ru", "vgtrk.com",
         "bitrix24.ru", "bitrix24.com", "bitrix.ru",
+        "bitrix24.net", "bitrix.info", "bitrix24.team",
         "1c-bitrix.ru", "bx-cloud.com", "bitrixsoft.com",
         "pyaterochka.ru", "x5.ru", "x5retail.ru", "au.ru",
         "rusprofile.ru", "kontur.ru", "tensor.ru", "diadoc.ru", "sbis.ru",
@@ -345,6 +356,16 @@
         "geoip:blocked@ru",
         "geoip:blocked-community@ru",
         "geosite:blocked@ru"
+      ]
+    },
+    {
+      "outbound": "currentSelected",
+      "name": "🌐 Default → VPN (catch-all, всё остальное в туннель)",
+      "switch": true,
+      "or": true,
+      "network": [
+        "tcp",
+        "udp"
       ]
     }
   ]

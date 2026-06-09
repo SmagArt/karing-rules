@@ -79,12 +79,22 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | 1 | Adblock / AdblockPlus / Malware & Phishing | block |
 | 2 | Local Fitness API (Zepp/Huami) | direct |
 | 3 | RU Marketplaces & CDN (WB/Ozon/Яндекс/Авито + их CDN) | direct |
-| 4 | VK (app + Messenger + CDN) | direct |
-| 5 | RU Priority (geosite/geoip:ru, банки, госуслуги, инфра) | direct |
-| 6 | Xiaomi Home | direct |
-| 7 | Apple (кроме рекламы) / Apple Ads | direct / block |
-| 8 | YouTube, Gemini, Google, Instagram, Netflix, Discord, WhatsApp, Telegram, Claude, OpenAI, GitHub | currentSelected |
-| 9 | GFW (заблокированное в РФ) | currentSelected |
+| 4 | YouTube, Gemini | currentSelected |
+| 4a | **Google (search/Cloud/Gmail/Drive)** | **direct** |
+| 5 | RU-facing за Cloudflare (search4faces и пр.) | direct |
+| 6 | VK (app + Messenger + CDN) | direct |
+| 7 | RU Priority (geosite/geoip:ru, банки, госуслуги, инфра) | direct |
+| 8 | Xiaomi Home | direct |
+| 9 | Apple (кроме рекламы) / Apple Ads | direct / block |
+| 10 | Instagram, Netflix, Discord, WhatsApp, Telegram, Claude, OpenAI, GitHub, Strava | currentSelected |
+| 11 | GFW (заблокированное в РФ) | currentSelected |
+
+**Почему Google → direct:** в РФ google-поиск/Cloud/Gmail **не заблокированы** —
+реально нужен VPN только для YouTube и Gemini (стоят выше, ловятся первыми).
+Гнать весь Google в туннель = слать его через grязный datacenter-IP exit'а
+(Datacamp и пр.), на котором Google кидает «необычный трафик»/reCAPTCHA и 403.
+То же лечение для любого RU-доступного сайта за Cloudflare (правило #5):
+с VPN-IP крутится CF-challenge → картинки/запросы отваливаются → ставим direct.
 
 **Важно:** все `direct`-правила РФ стоят **до** GFW, иначе российские IP уйдут под VPN.
 
@@ -123,6 +133,18 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 
 ## История изменений
 
+- **2026-06-09** — `🌏 Google` переведён `currentSelected → direct` (поиск/Cloud/
+  Gmail/Drive; YouTube и Gemini остаются в VPN — стоят выше). Добавлено правило
+  `🔍 RU-facing за Cloudflare` (direct) с `search4faces.com`. Причина: exit Blanc
+  сидел на flagged datacenter-диапазоне (проверено: `195.181.164.232`, London,
+  AS60068 Datacamp) → Google reCAPTCHA/403, Cloudflare-challenge у RU-сайтов.
+  Симптом «гугл не работает / search4faces не грузит картинки» был от грязного
+  VPN-IP, а не от поломки Blanc (VPN был жив).
+  Туда же добавлены ВТБ (`vtb24.ru`, `vtb-online.ru`, `bankvtb.ru`) и Битрикс24
+  (`bitrix24.net`, `bitrix.info`, `bitrix24.team` — OAuth/облако/push, текли мимо
+  `bitrix24.ru`). ⚠️ «Сириус» (маскировочный клон ВТБ Онлайн в App Store) ходит
+  на нестандартный бэкенд — если детект остался, найти реальный домен во вкладке
+  **Connections** (идёт через прокси, не direct) и добавить сюда.
 - **2026-05** — добавлен блок `RU Marketplaces & CDN`: CDN маркетплейсов
   (`wbbasket.ru`, `wbstatic.net`, `wbx-content.ru`, `ozone.ru`, `yastatic.net`
   и др.), VK расширен (`mycdn.me`, `vkvideo.ru`, `vkuserlive.net`...).
