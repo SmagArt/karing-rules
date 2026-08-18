@@ -111,6 +111,23 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 
 ---
 
+## VK API из скриптов — мимо прокси совсем (18.08.2026)
+
+Правило `VK → direct` (#9) работает **только в режиме Rule**. Скрипты выгрузки ВК
+(`vk-blog/vk_fetch_*.py`, `chat-merge/tools/vk_fetch_history.py`) ходят через
+`HTTP(S)_PROXY=127.0.0.1:3067` из окружения Claude, и при Global их API-трафик
+уходил в туннель. ВК посчитал сотни запросов Kate-токена с датацентрового IP
+взломом аккаунта и трижды заблокировал профиль (1 день → 3 → неделя).
+
+Лечение — не в правилах Karing, а в самих скриптах: сессия с `trust_env=False`,
+`api.vk.com` идёт напрямую независимо от режима Karing (вернуть прокси: `VK_USE_PROXY=1`).
+См. `Projects_lite/vk-blog/vk_net.py` и `memory/reference_vk_antifraud_blocks.md`.
+
+Мораль общая: для скриптов, чей трафик критичен к IP, не полагаться на режим
+клиента — вырезать прокси на уровне кода.
+
+---
+
 ## Как добавить сервис в direct
 
 В `domain_suffix` нужного правила. `domain_suffix` покрывает домен и все
