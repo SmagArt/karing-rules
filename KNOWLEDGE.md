@@ -84,6 +84,7 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | 5 | RU-facing за Cloudflare (search4faces и пр.) | direct |
 | 6 | VK (app + Messenger + CDN) | direct |
 | 7 | RU Priority (geosite/geoip:ru, банки, госуслуги, инфра) | direct |
+| 7a | **Twinby (дейтинг)** | **direct** |
 | 8 | Xiaomi Home | direct |
 | 9 | Apple (кроме рекламы) / Apple Ads | direct / block |
 | 10 | Instagram, Netflix, Discord, WhatsApp, Telegram, Claude, OpenAI, GitHub, Strava | currentSelected |
@@ -149,6 +150,11 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 ---
 
 ## История изменений
+
+- **2026-08-25** — добавлено правило `💘 RU Dating (Twinby)` → direct
+  (`twinby.ru`, `twinby.com`, `twinby.app`; бэкенд — Yandex Cloud, `158.160.111.197`).
+  Причина: без явного правила домен уходил в catch-all → VPN → детект по IP выхода.
+  Фото/медиа лежат на `yandexcloud.net` — он уже direct.
 
 - **2026-06-09** — `🌏 Google` переведён `currentSelected → direct` (поиск/Cloud/
   Gmail/Drive; YouTube и Gemini остаются в VPN — стоят выше). Добавлено правило
