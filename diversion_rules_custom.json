@@ -533,16 +533,6 @@
         "geoip:blocked-community@ru",
         "geosite:blocked@ru"
       ]
-    },
-    {
-      "outbound": "currentSelected",
-      "name": "🌐 Default → VPN (catch-all, всё остальное в туннель)",
-      "switch": true,
-      "or": true,
-      "network": [
-        "tcp",
-        "udp"
-      ]
     }
   ]
 }
