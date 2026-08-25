@@ -325,6 +325,18 @@
     },
     {
       "outbound": "direct",
+      "name": "📦 RU Logistics (5Post / X5 — direct)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "fivepost.ru",
+        "5post.ru",
+        "x5.ru",
+        "x5group.ru"
+      ]
+    },
+    {
+      "outbound": "direct",
       "name": "🏠 Xiaomi Home",
       "switch": true,
       "or": true,

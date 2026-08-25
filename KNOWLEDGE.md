@@ -104,6 +104,7 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | 6 | VK (app + Messenger + CDN) | direct |
 | 7 | RU Priority (geosite/geoip:ru, банки, госуслуги, инфра) | direct |
 | 7a | **Twinby (дейтинг)** | **direct** |
+| 7b | **5Post / X5 (постаматы, кабинет отправителя)** | **direct** |
 | 8 | Xiaomi Home | direct |
 | 9 | Apple (кроме рекламы) / Apple Ads | direct / block |
 | 10 | Instagram, Netflix, Discord, WhatsApp, Telegram, Claude, OpenAI, GitHub, Strava | currentSelected |
@@ -169,6 +170,14 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 ---
 
 ## История изменений
+
+- **2026-08-25** — добавлено правило `📦 RU Logistics (5Post / X5)` → direct
+  (`fivepost.ru`, `5post.ru`, `x5.ru`, `x5group.ru`). Причина: кабинет отправителя
+  `fivepost.ru/clients-portal/send-order` — SPA, которая тянет API и авторизацию
+  с других доменов: `api-omni.x5.ru`, `kc-omni.x5.ru` (Keycloak), `kaf-webgate.x5.ru`.
+  Сам `fivepost.ru` ловится geosite/geoip:ru, а `x5.ru` — не всегда → авторизация
+  шла через VPN → белая страница/вечный спиннер. Проверено: все четыре домена
+  отвечают с RU-IP (193.232.108.x, 91.206.100.x) — блокировки со стороны РКН нет.
 
 - **2026-08-25** — удалён catch-all `🌐 Default → VPN` (см. раздел выше: он перекрывал
   geoip:ru и все правила ниже себя; Final делает то же самое).
