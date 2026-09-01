@@ -96,7 +96,7 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | # | Правило | Действие |
 |---|---------|----------|
 | 1 | Adblock / AdblockPlus / Malware & Phishing | block |
-| 2 | Local Fitness API (Zepp/Huami) | direct |
+| 2 | Local Fitness API (Zepp/Huami, вкл. `zepp.com`) | direct |
 | 3 | RU Marketplaces & CDN (WB/Ozon/Яндекс/Авито + их CDN) | direct |
 | 4 | YouTube, Gemini | currentSelected |
 | 4a | **Google (search/Cloud/Gmail/Drive)** | **direct** |
@@ -198,6 +198,13 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
   `bitrix24.ru`). ⚠️ «Сириус» (маскировочный клон ВТБ Онлайн в App Store) ходит
   на нестандартный бэкенд — если детект остался, найти реальный домен во вкладке
   **Connections** (идёт через прокси, не direct) и добавить сюда.
+- **2026-09-01** — в `Local Fitness API` добавлен `zepp.com` (+ `zepp.us`,
+  `huami-inc.com`). Правило покрывало только `huami.com`, под старые скрипты
+  (`ZEPP_API_BASE = api-mifit.huami.com`). ZeppBridge ходит на новые домены:
+  вход — `user.zepp.com`, API — `api-mifit-us3.zepp.com`; они уходили в узел →
+  `ERR_CONNECTION_RESET` в окне входа и таймаут при сохранении credentials.
+  Замер: прямой TCP 443 на все три хоста проходит, через прокси `huami.com`
+  отдаёт 404 (правило direct работает), а оба `zepp.com` — таймаут.
 - **2026-05** — добавлен блок `RU Marketplaces & CDN`: CDN маркетплейсов
   (`wbbasket.ru`, `wbstatic.net`, `wbx-content.ru`, `ozone.ru`, `yastatic.net`
   и др.), VK расширен (`mycdn.me`, `vkvideo.ru`, `vkuserlive.net`...).
