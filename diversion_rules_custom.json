@@ -34,6 +34,15 @@
       ]
     },
     {
+      "outbound": "currentSelected",
+      "name": "⌚ Zepp Watchface (вход/токен — через VPN)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "watchface.zepp.com"
+      ]
+    },
+    {
       "outbound": "direct",
       "name": "🏃 Local Fitness API (Zepp/Mi-Fit only — direct)",
       "switch": true,
