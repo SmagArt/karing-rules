@@ -96,6 +96,7 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | # | Правило | Действие |
 |---|---------|----------|
 | 1 | Adblock / AdblockPlus / Malware & Phishing | block |
+| 1a | **Zepp Watchface (`watchface.zepp.com`)** | **currentSelected** |
 | 2 | Local Fitness API (Zepp/Huami, вкл. `zepp.com`) | direct |
 | 3 | RU Marketplaces & CDN (WB/Ozon/Яндекс/Авито + их CDN) | direct |
 | 4 | YouTube, Gemini | currentSelected |
@@ -118,6 +119,30 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 с VPN-IP крутится CF-challenge → картинки/запросы отваливаются → ставим direct.
 
 **Важно:** все `direct`-правила РФ стоят **до** GFW, иначе российские IP уйдут под VPN.
+
+---
+
+## watchface.zepp.com — только через VPN (04.09.2026)
+
+Страница входа Zepp, которая выдаёт app-токен (её же открывает ZeppBridge в своём
+окне авторизации), **на прямом соединении не грузится**: HTML в 5 КБ приходит за
+0,2 с, а JS-бандл в 1 МБ обрывается на ~16 КБ и дальше ползёт по 273 Б/с до таймаута.
+Классическое DPI-подтормаживание: сервер отвечает 200, соединение живо, данные не идут.
+
+Замер, порт → результат на `static/js/main.*.chunk.js`:
+
+| Порт | Режим | Итог |
+|------|-------|------|
+| 3065 | Direct | 16 КБ за 45 с, обрыв |
+| 3067 | Rule (до правила) | 16 КБ за 45 с, обрыв |
+| 3066 | Global | **999 КБ за 1,8 с** |
+
+Симптом на устройстве: пустое чёрное окно «Sign in to Zepp» в ZeppBridge и намертво
+висящая вкладка в Chrome. Выглядит как поломка WebView2 — на самом деле сеть.
+
+Поэтому `watchface.zepp.com` вынесен **отдельным правилом выше** Local Fitness API:
+сама страница входа идёт через VPN, а API (`api-mifit.huami.com` и прочие) остаётся
+direct — иначе спортивные скрипты ловят детект (см. `feedback_karing_huami_proxy`).
 
 ---
 
