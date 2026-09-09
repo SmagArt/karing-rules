@@ -91,25 +91,32 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 
 `outbound`: `block` — блокировка · `direct` — напрямую · `currentSelected` — через VPN.
 
-Текущий порядок правил:
+Канонический порядок (09.09.2026). Нумерация = позиция в Karing → Diversion сверху вниз.
 
 | # | Правило | Действие |
 |---|---------|----------|
-| 1 | Adblock / AdblockPlus / Malware & Phishing | block |
-| 1a | **Zepp Watchface (`watchface.zepp.com`)** | **currentSelected** |
-| 2 | Local Fitness API (Zepp/Huami, вкл. `zepp.com`) | direct |
-| 3 | RU Marketplaces & CDN (WB/Ozon/Яндекс/Авито + их CDN) | direct |
-| 4 | YouTube, Gemini | currentSelected |
-| 4a | **Google (search/Cloud/Gmail/Drive)** | **direct** |
-| 5 | RU-facing за Cloudflare (search4faces и пр.) | direct |
-| 6 | VK (app + Messenger + CDN) | direct |
-| 7 | RU Priority (geosite/geoip:ru, банки, госуслуги, инфра) | direct |
-| 7a | **Twinby (дейтинг)** | **direct** |
-| 7b | **5Post / X5 (постаматы, кабинет отправителя)** | **direct** |
-| 8 | Xiaomi Home | direct |
-| 9 | Apple (кроме рекламы) / Apple Ads | direct / block |
-| 10 | Instagram, Netflix, Discord, WhatsApp, Telegram, Claude, OpenAI, GitHub, Strava | currentSelected |
-| 11 | GFW (заблокированное в РФ) | currentSelected |
+| 1 | 📊 Yandex Metrika / AppMetrica | direct |
+| 2–4 | 🛑 Adblock · 🍃 AdblockPlus · 🛑 Malware & Phishing | block |
+| 5 | ⌚ Zepp Watchface (`watchface.zepp.com`) | currentSelected |
+| 6 | 🏃 Local Fitness API (Zepp/Huami, вкл. `zepp.com`) | direct |
+| 7 | 🛒 RU Marketplaces & CDN (WB/Ozon/Яндекс/Авито + CDN) | direct |
+| 8–9 | 📹 YouTube · ♊️ Google Gemini | currentSelected |
+| 10 | 🌏 Google (search/Cloud/Gmail/Drive) | direct |
+| 11 | 🔍 RU-facing за Cloudflare (search4faces и пр.) | direct |
+| 12 | 📘 VK (app + Messenger + CDN) | direct |
+| 13 | 🏅 RU Running events | direct |
+| 14 | 💘 RU Dating (Twinby) | direct |
+| 15 | 📦 RU Logistics (5Post / X5) | direct |
+| 16 | 🏠 Xiaomi Home | direct |
+| 17 | ☁️ iCloud | direct |
+| 18 | 🍎 Apple | direct |
+| 19–27 | 📸 Instagram · 🎥 Netflix · 📲 Discord · 📲 WhatsApp · 📲 Telegram · 💬 Claude · 💬 OpenAI · 🐙 GitHub · 🚴 Strava | currentSelected |
+| 28 | 🇷🇺 RU Priority (`geosite:ru` + `geoip:ru` + банки + гос) | direct |
+| 29 | 🌏 GFW (RU Blocked) | currentSelected |
+
+**`RU Priority` — это широкий catch-all, а не обычная группа.** Внутри `geosite:ru` и `geoip:ru`, то есть почти весь российский домен и IP-диапазон. Держать её предпоследней, прямо над GFW: всё, что выше, решается точечно, всё остальное российское падает в direct само. Пока она стояла на 13-й позиции, любой зарубежный сервис с российской PoP-нодой мог уйти direct мимо своего же VPN-правила.
+
+Из этого следует, что **точечные RU-правила нужны не для всех российских сайтов** — `auto.ru`, `pochta.ru`, `cdek.ru` и подобные и так ловятся `geosite:ru`. Отдельная группа выше нужна только когда: (а) у сервиса не-российский CDN-домен (`avito.st`, `wbstatic.net`, `vk-cdn.net`, `ozonusercontent.com`, `alicdn.com`, `lmcdn.ru`) — geosite его не знает; (б) сервис наоборот надо загнать в VPN; (в) домен режется собственным адблоком.
 
 **Почему Google → direct:** в РФ google-поиск/Cloud/Gmail **не заблокированы** —
 реально нужен VPN только для YouTube и Gemini (стоят выше, ловятся первыми).
@@ -119,6 +126,32 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 с VPN-IP крутится CF-challenge → картинки/запросы отваливаются → ставим direct.
 
 **Важно:** все `direct`-правила РФ стоят **до** GFW, иначе российские IP уйдут под VPN.
+
+---
+
+## ⚠️ Порядок правил: что обязано стоять выше чего
+
+sing-box берёт **первое совпавшее** правило и дальше список не читает. Поэтому узкое правило (один домен) обязано стоять **выше** широкого (суффикс родительского домена, geosite, geoip, adblock-набор), иначе оно мертво — файл выглядит правильным, а работает не так.
+
+Отдельно: **при импорте файла порядок НЕ переносится.** Karing кладёт новые и изменённые группы **в конец** списка. После каждого импорта порядок надо проверять и восстанавливать руками — Diversion → перетащить группу. Активный порядок виден в `%APPDATA%\karing\karing\service_core.json` → `route.rules` (сортировка там = реальная сортировка движка).
+
+Жёсткие зависимости, которые нельзя нарушать:
+
+| Что | Обязано быть ВЫШЕ | Почему иначе ломается |
+|-----|-------------------|------------------------|
+| `⌚ Zepp Watchface` (`watchface.zepp.com` → VPN) | `🏃 Local Fitness API` (там суффикс `zepp.com` → direct) | суффикс съедает поддомен, вход в Zepp/ZeppBridge уходит direct → чёрное окно, DPI режет JS-бандл |
+| `📊 Yandex Metrika / AppMetrica` (direct) | `🛑 Adblock` (`geosite:category-ads`, `acl:BanAD`) | кабинет Метрики лежит в adblock-наборах → `ERR_CONNECTION_RESET` |
+| Любое точечное RU-правило (Twinby, 5Post, RU Running, search4faces, Avito/маркетплейсы) | `🌏 GFW (RU Blocked)` и `geosite:ru` / `geoip:ru` | RU-IP уйдут в туннель → детект VPN на стороне сервиса |
+| `📹 YouTube`, `♊️ Gemini` (VPN) | `🌏 Google (geosite:google)` (direct) | иначе весь Google, включая YouTube, пойдёт direct и YouTube не откроется |
+| Все точечные правила (и direct, и VPN) | `🇷🇺 RU Priority` (`geosite:ru`+`geoip:ru`) и `🌏 GFW` | это два широких catch-all; всё, что ниже них, недостижимо для российских доменов и IP |
+
+**Проверка одной командой** (порядок и позиции в живом конфиге):
+
+```
+python -c "import json,io,os,sys; sys.stdout.reconfigure(encoding='utf-8'); d=json.load(io.open(os.path.expandvars(r'%APPDATA%\karing\karing\service_core.json'),encoding='utf-8')); [print(i,r.get('outbound'),r.get('name')) for i,r in enumerate(d['route']['rules'])]"
+```
+
+Если группа оказалась в хвосте — перетащить в Karing → Diversion и переподключиться.
 
 ---
 
@@ -174,6 +207,22 @@ direct — иначе спортивные скрипты ловят детек�
 
 ---
 
+## Connections без UI: Clash API самого Karing (09.09.2026)
+
+Karing поднимает Clash-совместимый API — тот же источник, что у раздела **Connections** в приложении. Адрес и секрет лежат в `service_core.json` → `experimental.clash_api` (`external_controller`, `secret`). Порт 3057, секрет свой на каждой машине — брать из файла, не хардкодить.
+
+Готовый читатель — `check_connections.py` в этой папке: показывает `домен → каким правилом поймано → куда ушло`.
+
+```
+python check_connections.py            # все живые соединения
+python check_connections.py apple      # фильтр по подстроке домена
+```
+
+Это единственный надёжный способ проверить, куда реально уходит сервис: `service_core.log` пишет только ERROR, решений о маршрутизации там нет.
+
+**Две грабли:** запрос к `127.0.0.1:3057` надо слать **мимо системного прокси** (иначе Karing отвечает 502 на собственный порт — в curl `--noproxy '*'`, в Python пустой `ProxyHandler`), и ответ читать как UTF-8 (иначе имена правил приезжают кракозябрами).
+
+
 ## Как добавить сервис в direct
 
 В `domain_suffix` нужного правила. `domain_suffix` покрывает домен и все
@@ -195,6 +244,34 @@ direct — иначе спортивные скрипты ловят детек�
 ---
 
 ## История изменений
+- **2026-09-09 (Apple Ads)** — `geosite:apple-ads` **не существует**: Karing отвергает имя («Неверный
+  [RuleSet(build-in)]»), в geo-базе есть только `apple`, `apple-dev`, `apple-pki`, `apple-update`, а реклама
+  лежит общими наборами (`category-ads`). Значит, группа `🍎 Apple Ads` никогда не работала и отваливалась
+  при каждом импорте — поэтому её и не было на устройстве. Из файла удалена, стало 29 правил.
+  Отдельная группа и не нужна: `🛑 Adblock` / `🍃 AdblockPlus` стоят на 2–4, то есть выше `🍎 Apple` (18),
+  и режут рекламные домены до того, как Apple-правило отправит их в direct.
+  **Урок:** имена встроенных наборов проверять, а не додумывать по аналогии; правило с невалидным именем
+  молча не доезжает при импорте, и его отсутствие легко принять за чужое удаление.
+- **2026-09-09 (порядок)** — сверено с устройством по скриншотам Diversion. Две правки:
+  `🇷🇺 RU Priority` опущена с 13-й позиции на предпоследнюю (над GFW) — внутри неё `geosite:ru`+`geoip:ru`,
+  широкий catch-all, который перехватывал всё стоящее ниже; `🍎 Apple Ads` (block) поднята **выше**
+  `🍎 Apple` (direct), иначе при пересечении наборов блок рекламы не срабатывает. Обнаружено, что группы
+  `🍎 Apple Ads` на устройстве нет вовсе — и не «не доехала при импорте», а удалена: осиротевшей записи
+  в `diversion_group` тоже не осталось. Восстановлена в `karing_config_patched/` (см. ниже).
+- **2026-09-09 (конфиг приложения)** — живой конфиг Karing лежит в `%APPDATA%\karing\karing\` и состоит
+  из двух связанных файлов: `karing_routing_group.json` (`items[0].groups` — группы и их порядок) и
+  `karing_subscribe_use.json` (`diversion_group` — соответствие «группа → outbound», сопоставление по
+  `diversion_name`). `service_core.json` — генерируемый, править его бесполезно. Karing держит конфиг
+  в памяти и перезаписывает при выходе, поэтому **править файлы можно только при полностью закрытом
+  приложении**. Патч-копии с `🍎 Apple Ads` собраны в `karing_config_patched/` + инструкция в его README:
+  подменять оба файла сразу, иначе группа окажется без действия.
+- **2026-09-09** — Авито: проверено, что уже идёт `direct` в группе `🛒 RU Marketplaces & CDN`
+  (`avito.ru`, `avito.st`, `avito.ru.com`, `avito-cdn.net`), позиция выше `geosite:ru`/`geoip:ru` и GFW —
+  поднимать не требуется. Сообщение «Объявления пользователя скрыты / слишком много запросов с вашего
+  профиля» — **не** детект VPN, а антифрод Авито по частоте запросов от аккаунта: лечится паузой
+  30–60 мин и задержками 3–5 с в скриптах, а не маршрутизацией. Гнать Авито через VPN нельзя —
+  счётчик привязан к профилю, а datacenter-IP добавит настоящий детект.
+  Зафиксирован раздел **«Порядок правил: что обязано стоять выше чего»** (см. выше).
 
 - **2026-08-25** — добавлено правило `📦 RU Logistics (5Post / X5)` → direct
   (`fivepost.ru`, `5post.ru`, `x5.ru`, `x5group.ru`). Причина: кабинет отправителя
