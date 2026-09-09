@@ -1,6 +1,22 @@
 {
   "rules": [
     {
+      "outbound": "direct",
+      "name": "📊 Yandex Metrika / AppMetrica (кабинет — direct, выше адблока)",
+      "switch": true,
+      "or": true,
+      "domain_suffix": [
+        "metrika.yandex.ru",
+        "metrika.yandex.com",
+        "metrica.yandex.com",
+        "metrika.yandex.net",
+        "appmetrica.yandex.ru",
+        "appmetrica.yandex.com",
+        "webvisor.com",
+        "yandexmetrica.com"
+      ]
+    },
+    {
       "outbound": "block",
       "name": "🛑 Adblock",
       "switch": true,
