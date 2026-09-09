@@ -109,10 +109,11 @@ https://raw.githubusercontent.com/SmagArt/karing-rules/main/diversion_rules_cust
 | 15 | 📦 RU Logistics (5Post / X5) | direct |
 | 16 | 🏠 Xiaomi Home | direct |
 | 17 | ☁️ iCloud | direct |
-| 18 | 🍎 Apple | direct |
-| 19–27 | 📸 Instagram · 🎥 Netflix · 📲 Discord · 📲 WhatsApp · 📲 Telegram · 💬 Claude · 💬 OpenAI · 🐙 GitHub · 🚴 Strava | currentSelected |
-| 28 | 🇷🇺 RU Priority (`geosite:ru` + `geoip:ru` + банки + гос) | direct |
-| 29 | 🌏 GFW (RU Blocked) | currentSelected |
+| 18 | 🍎 Apple Ads | block |
+| 19 | 🍎 Apple | direct |
+| 20–28 | 📸 Instagram · 🎥 Netflix · 📲 Discord · 📲 WhatsApp · 📲 Telegram · 💬 Claude · 💬 OpenAI · 🐙 GitHub · 🚴 Strava | currentSelected |
+| 29 | 🇷🇺 RU Priority (`geosite:ru` + `geoip:ru` + банки + гос) | direct |
+| 30 | 🌏 GFW (RU Blocked) | currentSelected |
 
 **`RU Priority` — это широкий catch-all, а не обычная группа.** Внутри `geosite:ru` и `geoip:ru`, то есть почти весь российский домен и IP-диапазон. Держать её предпоследней, прямо над GFW: всё, что выше, решается точечно, всё остальное российское падает в direct само. Пока она стояла на 13-й позиции, любой зарубежный сервис с российской PoP-нодой мог уйти direct мимо своего же VPN-правила.
 
@@ -140,6 +141,7 @@ sing-box берёт **первое совпавшее** правило и дал
 | Что | Обязано быть ВЫШЕ | Почему иначе ломается |
 |-----|-------------------|------------------------|
 | `⌚ Zepp Watchface` (`watchface.zepp.com` → VPN) | `🏃 Local Fitness API` (там суффикс `zepp.com` → direct) | суффикс съедает поддомен, вход в Zepp/ZeppBridge уходит direct → чёрное окно, DPI режет JS-бандл |
+| `🍎 Apple Ads` (block) | `🍎 Apple` (direct) | наборы пересекаются: общий direct первым — блок рекламы не сработает |
 | `📊 Yandex Metrika / AppMetrica` (direct) | `🛑 Adblock` (`geosite:category-ads`, `acl:BanAD`) | кабинет Метрики лежит в adblock-наборах → `ERR_CONNECTION_RESET` |
 | Любое точечное RU-правило (Twinby, 5Post, RU Running, search4faces, Avito/маркетплейсы) | `🌏 GFW (RU Blocked)` и `geosite:ru` / `geoip:ru` | RU-IP уйдут в туннель → детект VPN на стороне сервиса |
 | `📹 YouTube`, `♊️ Gemini` (VPN) | `🌏 Google (geosite:google)` (direct) | иначе весь Google, включая YouTube, пойдёт direct и YouTube не откроется |
@@ -223,6 +225,29 @@ python check_connections.py apple      # фильтр по подстроке д
 **Две грабли:** запрос к `127.0.0.1:3057` надо слать **мимо системного прокси** (иначе Karing отвечает 502 на собственный порт — в curl `--noproxy '*'`, в Python пустой `ProxyHandler`), и ответ читать как UTF-8 (иначе имена правил приезжают кракозябрами).
 
 
+## Имена встроенных наборов — проверять по списку, а не додумывать (09.09.2026)
+
+Полный перечень допустимых кодов лежит прямо в приложении:
+
+```
+<папка Karing>\datalutter_assetsssets\datas\geosite_codes.txt   (1953 кода)
+<папка Karing>\datalutter_assetsssets\datas\geoip_codes.txt
+<папка Karing>\datalutter_assetsssets\datascl_codes.txt
+```
+
+Путь к папке Karing: `(Get-Process karing).Path`. Никакого интернета для проверки не нужно.
+
+**Реклама сервиса — это суффикс `@ads`, а не дефис:** `apple@ads`, `yandex@ads`, `vk@ads`, `category-bank-ru@ads`. Из-за `apple-ads` вместо `apple@ads` группа `🍎 Apple Ads` не импортировалась вообще.
+
+**Есть готовые наборы под российские сервисы** — точнее и самообновляемее ручных списков доменов: `avito`, `ozon`, `wildberries`, `vk`, `yandex`, `mailru`, `mts-ru`, `tbank-ru`, `autoru`, `regru`, `nic-ru`, а также категории `category-ru`, `category-gov-ru`, `category-bank-ru`, `category-ecommerce-ru`, `category-retail-ru`, `category-media-ru`, `category-medicine-ru`, `category-forums-ru`, `category-entertainment-ru`, `category-travel-ru`, `category-tech-media-ru`, `category-education-ru`, `category-ai-ru`, `available-only-inside@ru`, `blocked@ru`. Ручные `domain_suffix` оставляем как страховку: geosite обновляется не мгновенно.
+
+⚠️ **Невалидное имя Karing выбрасывает молча.** В `🇷🇺 RU Priority` лежал `geosite:category-finance-ru` (такого кода нет) — в живом конфиге у группы осталось три набора вместо четырёх, без единой ошибки. При ручном вводе в UI имя отвергается с окном «Неверный [RuleSet(build-in)]», а при импорте файла — просто исчезает. Поэтому после каждой правки прогонять проверку:
+
+```
+python check_rulesets.py
+```
+
+
 ## Как добавить сервис в direct
 
 В `domain_suffix` нужного правила. `domain_suffix` покрывает домен и все
@@ -244,6 +269,13 @@ python check_connections.py apple      # фильтр по подстроке д
 ---
 
 ## История изменений
+- **2026-09-09 (наборы)** — найден локальный список допустимых кодов (`assets/datas/*_codes.txt`).
+  Поправка к записи выше: категория рекламы Apple **существует**, но зовётся `apple@ads`, а не `apple-ads` —
+  группа `🍎 Apple Ads` возвращена (block, 18-я позиция, над `🍎 Apple`). Заодно найден второй, молчаливый
+  сбой: `geosite:category-finance-ru` в `RU Priority` невалиден и был выброшен Karing без ошибки —
+  заменён на `geosite:category-gov-ru`. В `🛒 RU Marketplaces` добавлены `geosite:avito/ozon/wildberries/yandex`,
+  в `📘 VK` — `geosite:vk`: поддерживаемые наборы полнее ручных списков доменов, ручные оставлены страховкой.
+  Правил стало 30. Добавлен `check_rulesets.py` — валидатор имён по спискам из приложения.
 - **2026-09-09 (Apple Ads)** — `geosite:apple-ads` **не существует**: Karing отвергает имя («Неверный
   [RuleSet(build-in)]»), в geo-базе есть только `apple`, `apple-dev`, `apple-pki`, `apple-update`, а реклама
   лежит общими наборами (`category-ads`). Значит, группа `🍎 Apple Ads` никогда не работала и отваливалась

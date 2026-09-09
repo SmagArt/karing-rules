@@ -123,6 +123,12 @@
         "megamarket.ru",
         "lamoda.ru",
         "lmcdn.ru"
+      ],
+      "rule_set_build_in": [
+        "geosite:avito",
+        "geosite:ozon",
+        "geosite:wildberries",
+        "geosite:yandex"
       ]
     },
     {
@@ -195,6 +201,9 @@
         "vkmessenger.com",
         "ok.ru",
         "odnoklassniki.ru"
+      ],
+      "rule_set_build_in": [
+        "geosite:vk"
       ]
     },
     {
@@ -268,6 +277,15 @@
         "iCloudServices.exe",
         "ApplePhotoStreams.exe",
         "AppleCloudSyncService.exe"
+      ]
+    },
+    {
+      "outbound": "block",
+      "name": "🍎 Apple Ads",
+      "switch": true,
+      "or": true,
+      "rule_set_build_in": [
+        "geosite:apple@ads"
       ]
     },
     {
@@ -431,7 +449,7 @@
         "geosite:ru",
         "geoip:ru",
         "geosite:category-bank-ru",
-        "geosite:category-finance-ru"
+        "geosite:category-gov-ru"
       ],
       "domain_suffix": [
         "mail.ru",
